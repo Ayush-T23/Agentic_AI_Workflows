@@ -1,0 +1,308 @@
+{
+  "name": "Ayush's Restraunt",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "16e9f96f-0f91-45e0-87a3-bf5f9399ba8d",
+      "name": "When chat message received",
+      "webhookId": "b4f58cb1-2ce5-47de-b370-e3230b233137"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "deb418b4-52d2-439e-bb26-f6eb5dbd720c",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "S9sk783fOUjc2OKz",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        256,
+        208
+      ],
+      "id": "c64547da-9d64-4022-af32-01b54a6f76c2",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "3c68f45c-d833-4ed3-9238-8b1782b5a3e2",
+      "name": "AI-Agent"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get available food items and menu.\n\nIf user asks for food or menu, use this tool.",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1_OGL-JhENiEzgxAqSTbEHJjP84NXR1Kck8xfgYxwG40/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1461906902,
+          "mode": "list",
+          "cachedResultName": "Inventory",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_OGL-JhENiEzgxAqSTbEHJjP84NXR1Kck8xfgYxwG40/edit#gid=1461906902"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        736,
+        64
+      ],
+      "id": "d7fc6a3a-4e2c-468c-81b1-44ead0e78dd2",
+      "name": "menu_tool",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "UIDv8qqBy6NcjuBA",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to place orders.\n\nIMPORTANT RULES:\n- Before placing order, ALWAYS ask for:\n  1. Customer name\n  2. Quantity\n\n- If user only says food name:\n  Ask: \"How many would you like and your name?\"\n\n- DO NOT place order without these details.",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1_OGL-JhENiEzgxAqSTbEHJjP84NXR1Kck8xfgYxwG40",
+          "mode": "list",
+          "cachedResultName": "Food Delivery System (1)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_OGL-JhENiEzgxAqSTbEHJjP84NXR1Kck8xfgYxwG40/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 181789986,
+          "mode": "list",
+          "cachedResultName": "Orders",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_OGL-JhENiEzgxAqSTbEHJjP84NXR1Kck8xfgYxwG40/edit#gid=181789986"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Customer_Name": "Abhay",
+            "Food_Item": "pizza",
+            "Quantity_Ordered": "1",
+            "Order_Date": "12 sep 2026",
+            "Status": "pending"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Customer_Name",
+              "displayName": "Customer_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Food_Item",
+              "displayName": "Food_Item",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Quantity_Ordered",
+              "displayName": "Quantity_Ordered",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Order_Date",
+              "displayName": "Order_Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        608,
+        224
+      ],
+      "id": "9bf8502c-5b49-4878-8a04-4e7ede75cc31",
+      "name": "Order_tool",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "UIDv8qqBy6NcjuBA",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Answer restaurant-related questions like timing, delivery, payment.",
+        "documentId": {
+          "__rl": true,
+          "value": "1_OGL-JhENiEzgxAqSTbEHJjP84NXR1Kck8xfgYxwG40",
+          "mode": "list",
+          "cachedResultName": "Food Delivery System (1)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_OGL-JhENiEzgxAqSTbEHJjP84NXR1Kck8xfgYxwG40/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 292601275,
+          "mode": "list",
+          "cachedResultName": "FAQs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_OGL-JhENiEzgxAqSTbEHJjP84NXR1Kck8xfgYxwG40/edit#gid=292601275"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        432,
+        240
+      ],
+      "id": "12ece008-fd7b-42a0-b221-c4e7de8befb9",
+      "name": "faq_tool",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "h7a39jsSyir5yQqC",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI-Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI-Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI-Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "menu_tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI-Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Order_tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI-Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "faq_tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI-Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "bddfea0e-3db4-40ed-b4cf-808c5a4f31ee",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "367938a19a0da95a3326669b98eb15037ba6fac1105089aa3a2f92227f2d00d3"
+  },
+  "id": "a67jtIMAJcxpvKmK",
+  "tags": []
+}
